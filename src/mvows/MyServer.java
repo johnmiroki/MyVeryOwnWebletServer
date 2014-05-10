@@ -1,5 +1,7 @@
 package mvows;
 
+import utils.Utils;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -149,7 +151,7 @@ class SocketHandler extends Thread{
             else {
                 //存在且是文件
                 out.println("HTTP/1.0 200 OK");
-                out.println("Content-Type: "+Utils.lookupContentType(resource));
+                out.println("Content-Type: "+ Utils.lookupContentType(resource));
                 out.println();
 
                 fileOutput(out,requestedFile);
