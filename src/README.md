@@ -1,4 +1,4 @@
-# My Very Own Server
+# My Very Own Weblet Server
 ## 知识产权
 这个项目的创意属于[Java Server Side Programming: The Conceptual Foundation](http://www.amazon.com/Java-Server-Side-Programming-Conceptual-ebook/dp/B00ET2GUOK/ref=sr_1_1?s=digital-text&ie=UTF8&qid=1399693935&sr=1-1&keywords=java+server+side+programming+the+conceptual+foundation)的作者 Mukesh Prasad。
 ## 介绍
