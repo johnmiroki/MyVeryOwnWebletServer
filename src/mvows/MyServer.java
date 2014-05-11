@@ -104,7 +104,7 @@ class SocketHandler extends Thread{
                 }
                 else if(line.startsWith("Cookie:")){
                     //找到 cookie 行，取回 Cookie: 后面实际的 cookie 键值对
-                    cookieHeaderLine = line.substring("Cookie:".length()+1);
+                    cookieHeaderLine = line;
                     break;
                 }
                 else if(line.equals("")){

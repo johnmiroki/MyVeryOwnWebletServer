@@ -1,6 +1,7 @@
 package myapps;
 
 import mvows.MyWeblet;
+import mvows.WebletSession;
 
 import java.io.PrintWriter;
 import java.util.Date;
@@ -16,14 +17,28 @@ public class NameProcessor extends MyWeblet {
 
     @Override
     public void doRequest(String resource, String queryString, HashMap<String, String> parameters, PrintWriter out) {
-        out.println("<html>");
-        out.println("<body>");
+/*        out.println("<html>");
+        out.println("<body>");*/
 
-        //write out names
-        out.println("Hello "+parameters.get("firstname")+" "+parameters.get("lastname"));
+        //从请求中获取名字
+        String firstName = parameters.get("firstname");
+        String lastName = parameters.get("lastname");
+
+        //如果名字不完整，则返回重新输入
+        if (firstName == null || lastName == null) {
+            sendRedirect("/EnterName.html");
+
+        }
+        else {
+            //名字完整，获取 session，将名字存入其中，然后跳转到 SessionTest 来显示名字
+            WebletSession session = getSession();
+            session.setAttribute("firstname",firstName);
+            session.setAttribute("lastname", lastName);
+            sendRedirect("/SessionTest");
+        }
 
         //check if cookie exists
-        String cookie = getRequestCookie("TestCookie");
+/*        String cookie = getRequestCookie("TestCookie");
         if(cookie==null){
             synchronized ((cookieLock)){
                 cookie="Cookie_"+cookieNumber++;
@@ -35,15 +50,15 @@ public class NameProcessor extends MyWeblet {
             System.out.println("Setting cookie to: "+cookie);
         } else {
             System.out.println("Browser has cookie "+cookie);
-        }
+        }*/
 
         //add some dynamic info
-        out.println("<p>the time is now ");
+/*        out.println("<p>the time is now ");
         out.println(new Date());
         out.println("<p>the Resourse name is "+resource);
         out.println("<p>The Query String = "+queryString);
-
-        out.println("</body>");
-        out.println("</html");
+*/
+/*        out.println("</body>");
+        out.println("</html");*/
     }
 }

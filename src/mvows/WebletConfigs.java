@@ -15,6 +15,7 @@ public class WebletConfigs {
 
     static WebletConfigs[] webletConfigs = new WebletConfigs[]{
             new WebletConfigs("/Hello", myapps.HelloWorldMyWeblet.class),
-            new WebletConfigs("/ProcessName", myapps.NameProcessor.class)
+            new WebletConfigs("/ProcessName", myapps.NameProcessor.class),
+            new WebletConfigs("/SessionTest", myapps.SessionTest.class)
     };
 }

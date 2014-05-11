@@ -26,10 +26,11 @@ public class WebletProcessor {
         PrintWriter tempOut = new PrintWriter(byteArray);
         System.out.println("Ready to output");
 
+        //解析参数列表
         HashMap<String, String> parameters = Utils.parseQueryString(queryString);
 
         //传入 cookies
-        myWeblet.requestCookies = Utils.getRequestCookies(cookieHeaderLine);
+        myWeblet.requestCookies = Utils.parseRequestCookies(cookieHeaderLine);
         //把 weblet 输出信息暂存起来
         myWeblet.doRequest(resource, queryString, parameters, tempOut);
 
@@ -70,6 +71,6 @@ public class WebletProcessor {
         //把暂存容器中的信息输出到客户端
         out.println(byteArray.toString());
 
-        out.close();
+        out.flush();
     }
 }

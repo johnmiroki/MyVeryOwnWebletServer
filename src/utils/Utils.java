@@ -12,15 +12,16 @@ public class Utils {
     public static HashMap<String, String> parseQueryString(String queryString) throws UnsupportedEncodingException {
 
         HashMap<String, String> parameters = new HashMap<String, String>();
-        String[] pairs = queryString.split("&");
-        for (String pair : pairs) {
-            String[] keyVal = pair.split("=");
+        if(queryString!=null) {
+            String[] pairs = queryString.split("&");
+            for (String pair : pairs) {
+                String[] keyVal = pair.split("=");
 
-            String key = URLDecoder.decode(keyVal[0], "utf-8");
-            String val = URLDecoder.decode(keyVal[1], "utf-8");
-            parameters.put(key, val);
+                String key = URLDecoder.decode(keyVal[0], "utf-8");
+                String val = URLDecoder.decode(keyVal[1], "utf-8");
+                parameters.put(key, val);
+            }
         }
-
         return parameters;
     }
 
@@ -49,7 +50,7 @@ public class Utils {
         return null;
     }
 
-    public static HashMap<String, String> getRequestCookies(String cookieHeaders){
+    public static HashMap<String, String> parseRequestCookies(String cookieHeaders){
 
         HashMap<String, String> requestCookies = new HashMap<>();
 
@@ -57,7 +58,7 @@ public class Utils {
             return requestCookies;
         }
 
-        String cookieString = cookieHeaders.substring("Cookie:".length()).trim();
+        String cookieString = cookieHeaders.substring("Cookie: ".length()).trim();
 
         String[] cookies = cookieString.split(";");
 
@@ -69,7 +70,7 @@ public class Utils {
 
             requestCookies.put(key,value);
         }
-        return null;
+        return requestCookies;
     }
 
     public static void printCookieHeaders(HashMap<String, String> responseCookies, PrintWriter out) {
