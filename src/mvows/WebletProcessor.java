@@ -40,13 +40,15 @@ public class WebletProcessor {
             out.println("Location: "+myWeblet.newUrl);
             Utils.printCookieHeaders(myWeblet.responseCookies,out);
             out.println();
-        }else if(myWeblet.errorCode!=0) {
+        }
+        else if(myWeblet.errorCode!=0) {
             //有错误代码
             out.println("HTTP/1.0 "+myWeblet.errorCode+" "+myWeblet.description);
             Utils.printCookieHeaders(myWeblet.responseCookies,out);
             out.println();
 
-        } else {
+        }
+        else {
             out.println("HTTP/1.0 200 OK");
 
             if(myWeblet.contentType!=null){

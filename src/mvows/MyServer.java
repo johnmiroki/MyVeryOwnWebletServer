@@ -5,6 +5,7 @@ import utils.Utils;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 
 /**
  *
@@ -53,13 +54,13 @@ class SocketHandler extends Thread{
         this.socket=socket;
     }
 
-    private void fileOutput(PrintWriter out, File file) {
-        BufferedReader fileReader = null;
+    private void fileOutput(OutputStream out, File file) {
         try {
-            fileReader = new BufferedReader(new FileReader(file));
-            String line;
-            while((line = fileReader.readLine())!= null){
-                out.println(line);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            byte[] bytes = new byte[1024];
+            int len = -1;
+            while((len=fileInputStream.read(bytes))>0){
+                out.write(bytes,0,len);
             }
             out.flush();
         } catch (FileNotFoundException e) {
@@ -67,7 +68,6 @@ class SocketHandler extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     //继承多线程 @link run 方法，处理每个 socket
@@ -76,7 +76,8 @@ class SocketHandler extends Thread{
         try(
             //从 socket 中获取输入和输出流并包装以便操作
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream())
+            OutputStream oStream = socket.getOutputStream();
+            PrintWriter out = new PrintWriter(oStream)
          ) {
             //收到的第一行
             String firstLine = in.readLine();
@@ -92,7 +93,8 @@ class SocketHandler extends Thread{
                 queryString = resource.substring(queryIndex+1);
                 resource = resource.substring(0,queryIndex);
             } //不存在参数的话，就不用分了
-
+            //把 resourse 还原为普通字符串
+            resource = URLDecoder.decode(resource,"utf-8");
             //检查是否有 cookie
             String cookieHeaderLine = null;
             while(true){
@@ -143,7 +145,7 @@ class SocketHandler extends Thread{
                 out.println("Content-Type: text/html");
                 out.println();
 
-                fileOutput(out,requestedFile);
+                fileOutput(oStream,requestedFile);
 
                 socket.close();
                 return;
@@ -154,7 +156,7 @@ class SocketHandler extends Thread{
                 out.println("Content-Type: "+ Utils.lookupContentType(resource));
                 out.println();
 
-                fileOutput(out,requestedFile);
+                fileOutput(oStream,requestedFile);
                 socket.close();
                 return;
             }
