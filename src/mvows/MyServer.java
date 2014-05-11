@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 
 /**
  *
@@ -20,6 +21,9 @@ public class MyServer {
     public static void main(String[] args) throws IOException {
 
     ServerSocket server = new ServerSocket(80);
+
+    //运行 session 删除监视进程
+    new SessionDeleter().start();
 
     //建立 socket
     while(true) {
@@ -176,4 +180,35 @@ class SocketHandler extends Thread{
 
     }
 
+
+}
+//自动删除过期 session 的进程
+class SessionDeleter extends Thread {
+
+    @Override
+    public void run() {
+
+        while(true) {
+
+            try {
+                Thread.sleep(10000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            long expirationTime = System.currentTimeMillis() - 120000;
+
+            Enumeration<String> keys = MyWeblet.sessionMap.keys();
+
+            while(keys.hasMoreElements()) {
+                String key = keys.nextElement();
+                WebletSession session = MyWeblet.sessionMap.get(key);
+
+                if (session.lastUsed < expirationTime) {
+
+                    MyWeblet.sessionMap.remove(key);
+                }
+            }
+        }
+    }
 }

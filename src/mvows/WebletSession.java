@@ -9,6 +9,7 @@ import java.util.Objects;
  */
 public class WebletSession {
     HashMap<String, Object> data = new HashMap<>();
+    long lastUsed = System.currentTimeMillis();
 
     public void setAttribute(String key, Object value){
         data.put(key,value);

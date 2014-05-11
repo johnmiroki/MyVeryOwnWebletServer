@@ -49,6 +49,7 @@ public abstract class MyWeblet {
             sessionMap.put(sessionCookie,session);
         }
 
+        session.lastUsed = System.currentTimeMillis();
         return session;
     }
 
